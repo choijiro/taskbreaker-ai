@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 과제쪼개기 AI
 
-## Getting Started
+마감일이 있는 과제를 입력하면, 오늘부터 무엇을 해야 할지 작게 쪼개주는 웹앱입니다.
 
-First, run the development server:
+## 배포 링크
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+https://taskbreaker-ai-one.vercel.app
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## GitHub 저장소
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+https://github.com/choijiro/taskbreaker-ai
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 만든 목적
 
-## Learn More
+과제를 미루는 문제를 줄이기 위해 만들었습니다.  
+과제명, 마감일, 난이도, 하루에 쓸 수 있는 시간을 입력하면 실행 가능한 작은 단위의 계획을 보여줍니다.
 
-To learn more about Next.js, take a look at the following resources:
+## 현재 기능
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- 과제명 입력
+- 마감일 입력
+- 난이도 선택
+- 하루에 쓸 수 있는 시간 입력
+- 버튼 클릭 시 실행 계획 생성
+- 입력값에 따라 더미 실행 계획 변경
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 사용 기술
 
-## Deploy on Vercel
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
+- GitHub
+- Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 현재 버전
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### v0.1
+
+첫 번째 배포 버전입니다.
+
+아직 실제 AI API는 연결하지 않았고, 입력값을 바탕으로 더미 실행 계획을 생성합니다.
+
+## 다음 개발 예정
+
+- OpenAI 또는 Gemini API 연결
+- 실제 AI 기반 계획 생성
+- 결과 복사 버튼 추가
+- 모바일 UI 개선
+- 과제 저장 기능 추가
+- 로그인 기능 검토
+
+## 제작 기록
+
+2026년 5월 20일에 개발 환경 세팅부터 첫 배포까지 완료했습니다.
+
+진행 내용:
+
+1. GitHub, Vercel, Cursor 준비
+2. Node.js, npm, Git 설치
+3. Next.js 프로젝트 생성
+4. 과제쪼개기 AI 첫 화면 제작
+5. 입력값 기반 더미 계획 생성 기능 추가
+6. GitHub 저장소 생성 및 코드 업로드
+7. Vercel 배포 완료
