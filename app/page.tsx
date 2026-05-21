@@ -7,6 +7,7 @@ export default function Home() {
   const [deadline, setDeadline] = useState("");
   const [difficulty, setDifficulty] = useState("보통");
   const [availableTime, setAvailableTime] = useState("");
+  const [copied, setCopied] = useState(false);
   const [plan, setPlan] = useState<string[]>([
     "오늘: 과제 주제와 요구사항을 정리하기",
     "내일: 자료 3개 이상 찾고 목차 만들기",
@@ -14,6 +15,8 @@ export default function Home() {
   ]);
 
   const generatePlan = () => {
+    setCopied(false);
+
     if (!assignmentName.trim()) {
       setPlan(["먼저 과제명을 입력해 주세요."]);
       return;
@@ -35,6 +38,18 @@ export default function Home() {
     setPlan(newPlan);
   };
 
+  const copyPlan = async () => {
+    const text = plan.map((item) => `- ${item}`).join("\n");
+
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+    } catch {
+      setCopied(false);
+      alert("복사에 실패했습니다. 브라우저 권한을 확인해 주세요.");
+    }
+  };
+
   return (
     <main className="min-h-screen bg-gray-50 px-6 py-10 text-gray-900">
       <section className="mx-auto max-w-2xl">
@@ -51,6 +66,10 @@ export default function Home() {
         </div>
 
         <div className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
+          <div className="mb-5 rounded-xl bg-gray-50 p-4 text-sm text-gray-600">
+            과제명을 입력하고 계획을 생성하면, 실행 계획을 복사해서 Notion이나 메모장에 붙여넣을 수 있습니다.
+          </div>
+
           <div className="space-y-5">
             <div>
               <label className="mb-2 block text-sm font-medium">과제명</label>
@@ -110,12 +129,27 @@ export default function Home() {
         </div>
 
         <div className="mt-6 rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
-          <h2 className="mb-4 text-xl font-bold">실행 계획</h2>
+          <div className="mb-4 flex items-center justify-between gap-3">
+            <h2 className="text-xl font-bold">실행 계획</h2>
+            <button
+              onClick={copyPlan}
+              className="rounded-lg border border-gray-300 px-3 py-2 text-sm font-medium transition hover:bg-gray-100"
+            >
+              실행 계획 복사
+            </button>
+          </div>
+
           <ul className="space-y-3 text-gray-700">
             {plan.map((item, index) => (
               <li key={index}>✅ {item}</li>
             ))}
           </ul>
+
+          {copied && (
+            <p className="mt-4 text-sm font-medium text-gray-600">
+              복사 완료! Notion이나 메모장에 붙여넣을 수 있습니다.
+            </p>
+          )}
         </div>
       </section>
     </main>
