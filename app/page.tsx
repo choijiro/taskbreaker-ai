@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { generateTemplatePlan } from "../lib/generatePlan";
 
 export default function Home() {
   const [assignmentName, setAssignmentName] = useState("");
@@ -9,24 +8,45 @@ export default function Home() {
   const [difficulty, setDifficulty] = useState("보통");
   const [availableTime, setAvailableTime] = useState("");
   const [copied, setCopied] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [plan, setPlan] = useState<string[]>([
     "과제 주제와 요구사항을 먼저 정리하세요.",
     "자료를 3개 이상 찾고 핵심 내용을 메모하세요.",
     "목차를 만든 뒤 가장 쉬운 부분부터 작성하세요.",
   ]);
 
- const generatePlan = () => {
+ const generatePlan = async () => {
    setCopied(false);
+   setErrorMessage("");
+   setIsLoading(true);
 
-   const newPlan = generateTemplatePlan({
-     assignmentName,
-     deadline,
-     difficulty,
-     availableTime,
-  });
+   try {
+     const response = await fetch("/api/generate-plan", {
+       method: "POST",
+       headers: {
+         "Content-Type": "application/json",
+       },
+       body: JSON.stringify({
+         assignmentName,
+         deadline,
+         difficulty,
+         availableTime,
+       }),
+     });
 
-  setPlan(newPlan);
-};
+      if (!response.ok) {
+        throw new Error("계획 생성 요청에 실패했습니다.");
+      }
+
+     const data = await response.json();
+     setPlan(data.plan);
+   } catch {
+     setErrorMessage("계획 생성 중 오류가 발생했습니다. 다시 시도해 주세요.");
+   } finally {
+     setIsLoading(false);
+   }
+ };
 
 
 
@@ -139,13 +159,20 @@ export default function Home() {
               </div>
 
               <button
-                onClick={generatePlan}
-                className="w-full rounded-xl bg-gray-900 px-4 py-3 font-semibold text-white transition hover:bg-gray-700"
-              >
-                계획 생성하기
-              </button>
+  onClick={generatePlan}
+  disabled={isLoading}
+  className="w-full rounded-xl bg-gray-900 px-4 py-3 font-semibold text-white transition hover:bg-gray-700 disabled:cursor-not-allowed disabled:bg-gray-400"
+>
+  {isLoading ? "계획 생성 중..." : "계획 생성하기"}
+</button>
             </div>
           </div>
+
+{errorMessage && (
+  <p className="mb-4 rounded-xl bg-gray-50 p-3 text-sm font-medium text-gray-700">
+    {errorMessage}
+  </p>
+)}
 
           <div className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
             <div className="mb-5 flex items-start justify-between gap-3">
